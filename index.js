@@ -15,7 +15,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const bot = new Telegraf(BOT_TOKEN);
 
 
-bot.start(ctx => ctx.reply('Welcome! Send me text and I will send you a voice note.'));
+bot.start(ctx => ctx.reply('Welcome to Sylva! Send me text and I will send you a voice note.'));
 
 bot.on('text', async ctx => {
     try {
@@ -23,6 +23,11 @@ bot.on('text', async ctx => {
         const voiceNote = await convertTextToVoice(text);
         const audio = fs.readFileSync(voiceNote + ".mp3");
         ctx.replyWithVoice({ source: audio });
+        ctx.reply('Voice Note will be deleted in few minutes.');
+        setTimeout(() => {
+            ctx.deleteMessage(ctx.message.message_id);
+            // bot.telegram.deleteMessage(sentMessage.chat.id, sentMessage.message_id);
+        }, 20000);
     } catch (error) {
         console.error('Error processing text:', error);
         ctx.reply('Sylva is currently Struggling to respond. Please try again after some time.');
