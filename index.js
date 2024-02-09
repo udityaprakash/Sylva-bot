@@ -15,21 +15,24 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const bot = new Telegraf(BOT_TOKEN);
 
 
-bot.start(ctx => ctx.reply('Welcome to Sylva! Send me text and I will send you a voice note.'));
+bot.start((ctx) =>{
+    const username = ctx.message.from.username;
+    ctx.reply('Welcome '+ username +'! Send Sylva text and get a voice note in return.');
+});
 
 bot.on('text', async ctx => {
     try {
         const text = ctx.message.text;
         const voiceNote = await convertTextToVoice(text);
         const audio = fs.readFileSync(voiceNote + ".mp3");
-        let voice = ctx.replyWithVoice({ source: audio });
-        let warni = ctx.reply('Voice Note will be deleted in few minutes.');
-        setTimeout(() => {
-            bot.telegram.deleteMessage(warni.chat.id, warni.message_id);
-        }, 20000);
-        setTimeout(() => {
-            bot.telegram.deleteMessage(voice.chat.id, voice.message_id);
-        }, 60000);
+        ctx.replyWithVoice({ source: audio });
+        // let warni = ctx.reply('Voice Note will be deleted in few minutes.');
+        // setTimeout(() => {
+        //     bot.telegram.deleteMessage(warni.chat.id, warni.message_id);
+        // }, 20000);
+        // setTimeout(() => {
+        //     bot.telegram.deleteMessage(voice.chat.id, voice.message_id);
+        // }, 60000);
     } catch (error) {
         console.error('Error processing text:', error);
         ctx.reply('Sylva is currently Struggling to respond. Please try again after some time.');
