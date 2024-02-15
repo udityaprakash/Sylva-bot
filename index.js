@@ -26,13 +26,6 @@ bot.on('text', async ctx => {
         const voiceNote = await convertTextToVoice(text);
         const audio = fs.readFileSync(voiceNote + ".mp3");
         ctx.replyWithVoice({ source: audio });
-        // let warni = ctx.reply('Voice Note will be deleted in few minutes.');
-        // setTimeout(() => {
-        //     bot.telegram.deleteMessage(warni.chat.id, warni.message_id);
-        // }, 20000);
-        // setTimeout(() => {
-        //     bot.telegram.deleteMessage(voice.chat.id, voice.message_id);
-        // }, 60000);
     } catch (error) {
         console.error('Error processing text:', error);
         ctx.reply('Sylva is currently Struggling to respond. Please try again after some time.');
