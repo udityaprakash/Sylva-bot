@@ -44,6 +44,17 @@ async function convertTextToVoice(text) {
 
 bot.launch();
 
+app.use((err, req, res, next)=>{
+    if(err){
+
+        console.log(err);
+        res.status(500).send('Internal Server Error');
+    }else{
+        next();
+    }
+
+});
+
 
 app.get('/', (req, res) => {
     res.send('Bot is running!');
