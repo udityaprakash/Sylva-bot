@@ -24,7 +24,7 @@ bot.start((ctx) =>{
 bot.on('text', async ctx => {
     try {
         const text = ctx.message.text;
-        console.log("Message from " + ctx.message.from.first_name + text);
+        console.log("Message from " + ctx.message.from.first_name +" is "+ text);
         const voiceNote = await convertTextToVoice(text);
         const audio = fs.readFileSync(voiceNote + ".mp3");
         ctx.replyWithVoice({ source: audio });
@@ -50,6 +50,8 @@ app.get('/', (req, res) => {
 });
 
 
-app.listen(port, () => {
-    console.log(`Server has started to respond ${port}`);
-});
+// app.listen(port, () => {
+//     console.log(`Server has started to respond ${port}`);
+// });
+
+module.exports = app;
