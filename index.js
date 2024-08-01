@@ -1,7 +1,7 @@
 const express = require('express');
 const { Telegraf } = require('telegraf');
 const TextToSpeechConverter = require('text-to-speech-converter');
-const fs = require('fs');
+// const fs = require('fs');
 
 require('dotenv').config()
 
@@ -26,8 +26,8 @@ bot.on('text', async ctx => {
         const text = ctx.message.text;
         console.log("Message from " + ctx.message.from.first_name +" is "+ text);
         const voiceNote = await convertTextToVoice(text);
-        const audio = fs.readFileSync(voiceNote + ".mp3");
-        ctx.replyWithVoice({ source: audio });
+        // const audio = fs.readFileSync(voiceNote + ".mp3");
+        ctx.replyWithVoice({ source: voiceNote });
     } catch (error) {
         console.error('Error processing text:', error);
         ctx.reply('Sylva is currently Struggling to respond. Please try again after some time.');
@@ -36,8 +36,7 @@ bot.on('text', async ctx => {
 
 
 async function convertTextToVoice(text) {
-    const outputFilePath = 'latestvoice';
-    await TextToSpeechConverter(text, outputFilePath);
+    const outputFilePath = await TextToSpeechConverter(text);
     return outputFilePath;
 }
 
