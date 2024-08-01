@@ -2,6 +2,7 @@ const express = require('express');
 const { Telegraf } = require('telegraf');
 const TextToSpeechConverter = require('text-to-speech-converter');
 // const fs = require('fs');
+const qwe = require('gtts');
 
 require('dotenv').config()
 
@@ -25,9 +26,16 @@ bot.on('text', async ctx => {
     try {
         const text = ctx.message.text;
         console.log("Message from " + ctx.message.from.first_name +" is "+ text);
-        const voiceNote = await convertTextToVoice(text);
-        // const audio = fs.readFileSync(voiceNote + ".mp3");
-        ctx.replyWithVoice({ source: voiceNote });
+        // const voiceNote = await convertTextToVoice(text);
+        const speech = new qwe(text, 'en');
+
+        ctx.replyWithVoice({
+            source: speech.stream(),
+            filename: 'voice.mp3',
+            mimetype: 'audio/mp3'
+          });
+      
+          
     } catch (error) {
         console.error('Error processing text:', error);
         ctx.reply('Sylva is currently Struggling to respond. Please try again after some time.');
@@ -35,10 +43,10 @@ bot.on('text', async ctx => {
 });
 
 
-async function convertTextToVoice(text) {
-    const outputFilePath = await TextToSpeechConverter(text);
-    return outputFilePath;
-}
+// async function convertTextToVoice(text) {
+//     const outputFilePath = await TextToSpeechConverter(text);
+//     return outputFilePath;
+// }
 
 
 bot.launch();
@@ -60,8 +68,8 @@ app.get('/', (req, res) => {
 });
 
 
-// app.listen(port, () => {
-//     console.log(`Server has started to respond ${port}`);
-// });
+app.listen(port, () => {
+    console.log(`Server has started to respond ${port}`);
+});
 
-module.exports = app;
+// module.exports = app;
